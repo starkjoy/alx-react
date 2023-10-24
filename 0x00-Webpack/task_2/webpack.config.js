@@ -1,11 +1,16 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
-  entry: './js/dashboard_main.js',
+  mode: 'development',
+  entry: {
+    header: './src/header/header.js',
+    body: './src/body/body.js',
+    footer: './src/footer/footer.js',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'public'),
   },
   module: {
@@ -20,7 +25,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '/[name].[ext]',
+              name: 'images/[name].[ext]',
             },
           },
           'image-webpack-loader',
@@ -28,5 +33,22 @@ module.exports = {
       },
     ],
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin(), new HtmlWebpackPlugin()],
+  devServer: {
+    contentBase: './public',
+    port: 8564,
+    open: true,
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'common',
+          chunks: 'all',
+        },
+      },
+    },
+  },
 };
