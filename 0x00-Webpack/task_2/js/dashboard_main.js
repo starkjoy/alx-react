@@ -1,6 +1,7 @@
 // js/dashboard_main.js
 import $ from 'jquery';
 import _ from 'lodash';
+import './css/main.css';
 
 // Initialize a count variable
 let count = 0;
